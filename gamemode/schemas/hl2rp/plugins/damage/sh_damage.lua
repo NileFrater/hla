@@ -15,12 +15,20 @@ local translation = {
 	}
 
 function Damage_EntityTakeDamage(ent, dmginfo)
-	
-	if !ent:IsPlayer() then return end
-	
+
 	local attacker = dmginfo:GetAttacker()
 	local amount = dmginfo:GetDamage()
 	local dmgtype = dmginfo:GetDamageType()
+
+	if ent:IsValid() && ent:GetClass() == "prop_rotating_door" then
+		if attacker:IsPlayer() && dmgtype() == DMG_BULLET then
+			if amount > 5 then
+				ent:Fire('Open',0)
+			end
+		end
+	end
+
+	if !ent:IsPlayer() then return end
 	
 	if table.HasValue(bad_dmg_types, dmgtype) then
 		
