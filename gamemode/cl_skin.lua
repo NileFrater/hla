@@ -257,7 +257,7 @@ function SKIN:PaintTiramisuChatBox(panel)
 		if !panel.Open then
 			panel.Alpha = Lerp( 0.2, panel.Alpha, 0 )
 		else
-			 panel.Alpha = Lerp( 0.2, panel.Alpha, 150 )
+			panel.Alpha = Lerp( 0.2, panel.Alpha, 150 )
 		end
 	end
 

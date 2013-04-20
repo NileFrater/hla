@@ -207,7 +207,7 @@ surface.CreateFont( "TiramisuChatFontOutline",
 {
 	shadow	= true,
 	font		= CAKE.ConVars[ "ChatFont" ],
-	size		= 16,
+	size		= 18,
 	antialias	= true,
 	weight		= 400
 

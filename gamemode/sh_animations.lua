@@ -58,7 +58,7 @@ local model
 function meta:GetGender()
 
 	model = self:GetModel()
-	if table.HasValue( Anims.Female[ "models" ], model ) or self:GetNWString( "gender", "Male" ) == "Female" then
+	if table.HasValue( Anims.Female[ "models" ], model ) or self:GetNWString( "gender" ) == "Female" then
 		return "Female"
 	end
 	
@@ -539,12 +539,12 @@ function GM:HandlePlayerSwimming( ply, velocity ) --Handles swimming.
 		return false 
 	end
 	
-	if !CAKE.ConVars[ "LinuxHotfix" ] then
-		ply.CalcIdeal, ply.CalcSeqOverride = HandleSequence( ply, Anims[ ply:GetGender() ][ "default" ][ "swim" ] )
-	else
-		ply.CalcIdeal, ply.CalcSeqOverride = HandleSequence( ply, Anims[ ply:GetGender() ][ "default" ][ "fly" ] )
-	end
-	
+	-- if !CAKE.ConVars[ "LinuxHotfix" ] then
+	-- 	ply.CalcIdeal, ply.CalcSeqOverride = HandleSequence( ply, Anims[ ply:GetGender() ][ "default" ][ "swim" ] )
+	-- else
+	-- 	ply.CalcIdeal, ply.CalcSeqOverride = HandleSequence( ply, Anims[ ply:GetGender() ][ "default" ][ "fly" ] )
+	-- end
+	ply.CalcIdeal, ply.CalcSeqOverride = HandleSequence( ply, Anims[ ply:GetGender() ][ "default" ][ "fly" ] )
 	if SERVER then
 		ply:SetAiming(false)
 	end
@@ -716,7 +716,7 @@ function GM:CalcMainActivity( ply, velocity )
 	else
 		local holdtype = "default"
 		if( IsValid(ply:GetActiveWeapon()) ) then
-			holdtype = Anims.DetectHoldType( ply:GetHoldType() ) 
+			holdtype = Anims.DetectHoldType( ply:GetActiveWeapon():GetHoldType() ) 
 		end
 
 		if (holdtype == "default" and ply:GetPersonality() != "default" and !ply:GetNWBool( "specialmodel" )) or CAKE.ConVars[ "LinuxHotfix" ] then

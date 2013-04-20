@@ -1,0 +1,11 @@
+"AddonInfo"
+{
+	"name"				"Enhanced Citizens Redux"
+	"version"			"2.5"
+	"up_date"			"23rd December 2011"
+	"author_name"			"BlooCobalt/Enhanced_AI/Lt_Commander/Rusty"
+	"author_email"			""
+	"author_url"			""
+	"info"				"Enhanced Citizens - 123,093 options to choose from"
+	"override"			"0"
+}

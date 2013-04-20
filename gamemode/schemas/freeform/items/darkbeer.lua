@@ -5,7 +5,7 @@ ITEM.Model = "models/props_junk/garbage_glassbottle003a.mdl"
 ITEM.Purchaseable = true
 ITEM.Price = 10
 ITEM.ItemGroup = 1
-
+ITEM.Hunger = 2
 function ITEM:Drop(ply)
 
 end

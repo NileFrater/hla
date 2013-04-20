@@ -485,7 +485,7 @@ function PANEL:AddLine( channel, handler, ... )
 		if !self.Channels[ channel ] then
 			self:AddChannel( channel, "", handler )
 		end
-		self.Channels[ channel ]:AddText( ...)
+		self.Channels[ channel ]:AddText( ... )
 	end
 
 	chat.AddText( ... ) //Add it to the all channel

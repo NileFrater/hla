@@ -5,6 +5,7 @@ ITEM.Model = "models/weapons/w_package.mdl"
 ITEM.Purchaseable = false
 ITEM.Price = 0
 ITEM.ItemGroup = 1
+ITEM.Hunger = 20
 
 function ITEM:Drop(ply)
 

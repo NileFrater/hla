@@ -1339,7 +1339,6 @@ Anims.Female[ "slam" ] = {
 		[ "run" ] = "ACT_RUN"
 	},
 }
-
 util.PrecacheModel("models/gibs/agibs.mdl")
 for _,mdl in pairs(Anims.Male[ "models" ]) do
 	util.PrecacheModel( mdl )
