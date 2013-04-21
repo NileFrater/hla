@@ -57,8 +57,8 @@ function CAKE.OpenWeaponList( tbl )
 	list:AddColumn( "Class" )
 	list:AddColumn( "Name" )
 
-	function list:OnClickLine( Line )
-		Line:SetSelected( !Line:GetSelected() )
+	function list:OnClickLine( Line, isselected)
+		Line:SetSelected( !Line.m_bSelected )
 		Line.m_fClickTime = SysTime()
 
 		self:OnRowSelected( Line:GetID(), Line )
@@ -85,7 +85,7 @@ function CAKE.OpenWeaponList( tbl )
 		"Yes",	function()
 			table.Empty(tbl)
 			for k, line in pairs(list.Lines) do
-				if line and line:GetSelected() then
+				if line and line.m_bSelected then
 					table.insert(tbl, line:GetValue(1)) 
 				end
 			end

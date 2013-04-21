@@ -63,11 +63,11 @@ function Damage_EntityTakeDamage(ent, dmginfo)
 							print(ent:GetKeyValues()["hardware"] )
 							if ent:GetKeyValues()["hardware"] == 1 or ent:GetKeyValues()["hardware"] == 0 then
 								if dmginfo:GetDamagePosition():Distance(ent:LocalToWorld(Vector(1,42,-9))) < 4 then
-									ent:Fire('Open',0)
+									flyOpen(ent)
 								end
 							elseif ent:GetKeyValues()["hardware"] == 2 then
 								if dmginfo:GetDamagePosition():WithinAABox( ent:LocalToWorld(Vector(5, 44,-14)), ent:LocalToWorld(Vector(-5,3,-3)) ) then
-									ent:Fire('Open',0)
+									flyOpen(ent)
 								end
 							end 
 						end

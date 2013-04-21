@@ -228,7 +228,7 @@ function CAKE.AddRank( tbl )
 	rank["description"] = "None Available"
 
 	local frame = vgui.Create( "DFrame" )
-	frame:SetSize( 500, 300)
+	frame:SetSize( 550, 300)
 	frame:SetTitle("Creating a rank")
 	frame:ShowCloseButton( false )
 	frame:SetDeleteOnClose( true )
@@ -243,7 +243,7 @@ function CAKE.AddRank( tbl )
 
 	local Info = vgui.Create( "DPanelList", frame )
 	Info:Dock( LEFT )
-	Info:SetWidth( 230 )
+	Info:SetWidth( 280 )
 	Info.Paint = function() end
 	Info:DockMargin( 0, 0, 5, 0 )
 	Info:SetPadding(5)
@@ -256,6 +256,17 @@ function CAKE.AddRank( tbl )
 	InfoForm:SetName( "Info:" )
 	InfoForm:SetSpacing( 5 )
 	InfoForm:SetPadding( 5 )
+
+	local Level = vgui.Create( "DNumSlider" )
+	Level:SetValue(0)
+	Level:SetText( "Level (In rank hirearchy)" )
+	Level:SetMin( 0 ) -- Minimum number of the slider
+	Level:SetMax( 50 ) -- Maximum number of the slider
+	Level:SetDecimals( 0 ) -- Sets a decimal. Zero means it's a whole number
+	Level.OnValueChanged = function( panel, value )
+		rank["level"] = value
+	end
+	InfoForm:AddItem(Level)
 
 	local DescForm = vgui.Create( "DForm" )
 	DescForm:SetName( "Description:" )
@@ -279,17 +290,6 @@ function CAKE.AddRank( tbl )
 		rank["handler"] = Handler:GetValue()
 	end
 	InfoForm:AddItem(Handler)
-
-	local Level = vgui.Create( "DNumSlider", DermaPanel )
-	Level:SetValue(0)
-	Level:SetText( "Level (In rank hirearchy)" )
-	Level:SetMin( 0 ) -- Minimum number of the slider
-	Level:SetMax( 50 ) -- Maximum number of the slider
-	Level:SetDecimals( 0 ) -- Sets a decimal. Zero means it's a whole number
-	Level.OnValueChanged = function( panel, value )
-		rank["level"] = value
-	end
-	InfoForm:AddItem(Level)
 
 	local Desc = vgui.Create( "DTextEntry" )
 	Desc:SetTall( 120 )
@@ -457,7 +457,7 @@ function CAKE.EditRank( tbl, rankname )
 	end
 	InfoForm:AddItem(DefaultGroup)
 
-	local Level = vgui.Create( "DNumSlider", DermaPanel )
+	local Level = vgui.Create( "DNumSlider")
 	Level:SetValue(tonumber(rank["level"]))
 	Level:SetText( "Level (In rank hirearchy)" )
 	Level:SetMin( 0 ) -- Minimum number of the slider

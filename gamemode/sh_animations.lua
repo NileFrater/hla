@@ -544,7 +544,7 @@ function GM:HandlePlayerSwimming( ply, velocity ) --Handles swimming.
 	-- else
 	-- 	ply.CalcIdeal, ply.CalcSeqOverride = HandleSequence( ply, Anims[ ply:GetGender() ][ "default" ][ "fly" ] )
 	-- end
-	ply.CalcIdeal, ply.CalcSeqOverride = HandleSequence( ply, Anims[ ply:GetGender() ][ "default" ][ "fly" ] )
+	ply.CalcIdeal, ply.CalcSeqOverride = HandleSequence( ply, Anims[ ply:GetGender() ][ "default" ][ "swim" ] )
 	if SERVER then
 		ply:SetAiming(false)
 	end
@@ -640,6 +640,11 @@ function GM:HandleExtraActivities( ply ) --Drop in here everything additional yo
 			end)
 			return true
 		end
+	end
+
+	if ply:GetNWBool( "kickingdoor", false ) then
+		ply.CalcIdeal, ply.CalcSeqOverride = HandleSequence( ply, Anims[ ply:GetGender() ][ "default" ][ "kickdoor" ] )
+		return true
 	end
 	
 	if ply:GetNWBool( "sittingground", false ) then

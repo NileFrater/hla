@@ -92,7 +92,7 @@ Anims.Male[ "default" ] = {
 	[ "swim" ] = {
 		["model"] = "models/player/breen.mdl",
 		["type"] = "switch",
-		["act"] = "ACT_MP_SWIM"
+		["act"] = "ACT_HL2MP_SWIM"
 	},
 	[ "sitground" ] = "ACT_BUSY_SIT_GROUND",
 	[ "sitgroundentry" ] = "ACT_BUSY_SIT_GROUND_ENTRY",
@@ -117,7 +117,12 @@ Anims.Male[ "default" ] = {
 		[ "idle" ] = "ACT_IDLE_AIM_RIFLE_STIMULATED",
 		[ "walk" ] = "ACT_WALK_AIM_RIFLE_STIMULATED",
 		[ "run" ] = "ACT_RUN_AIM_RIFLE_STIMULATED"
-	}
+	},
+	[ "kickdoor" ] = {
+		["model"] = "models/police.mdl",
+		["type"] = "sequence",
+		["act"] = "kickdoorbaton",
+	},
 }
 Anims.Male[ "relaxed" ] = { 
 	[ "idle" ] = {
@@ -138,7 +143,7 @@ Anims.Male[ "relaxed" ] = {
 	[ "swim" ] = {
 		["model"] = "models/player/breen.mdl",
 		["type"] = "switch",
-		["act"] = "ACT_MP_SWIM"
+		["act"] = "ACT_HL2MP_SWIM"
 	},
 	[ "sitground" ] = "ACT_BUSY_SIT_GROUND",
 	[ "sitgroundentry" ] = "ACT_BUSY_SIT_GROUND_ENTRY",
@@ -181,7 +186,7 @@ Anims.Male[ "headstrong" ] = {
 	[ "swim" ] = {
 		["model"] = "models/player/breen.mdl",
 		["type"] = "switch",
-		["act"] = "ACT_MP_SWIM"
+		["act"] = "ACT_HL2MP_SWIM"
 	},
 	[ "sitground" ] = "ACT_BUSY_SIT_GROUND",
 	[ "sitgroundentry" ] = "ACT_BUSY_SIT_GROUND_ENTRY",
@@ -224,7 +229,7 @@ Anims.Male[ "frustrated" ] = {
 	[ "swim" ] = {
 		["model"] = "models/player/breen.mdl",
 		["type"] = "switch",
-		["act"] = "ACT_MP_SWIM"
+		["act"] = "ACT_HL2MP_SWIM"
 	},
 	[ "sitground" ] = "ACT_BUSY_SIT_GROUND",
 	[ "sitgroundentry" ] = "ACT_BUSY_SIT_GROUND_ENTRY",
@@ -817,7 +822,7 @@ Anims.Female[ "default" ] = {
 	[ "swim" ] = {
 		["model"] = "models/player/mossman.mdl",
 		["type"] = "sequence",
-		["act"] = "ACT_MP_SWIM"
+		["act"] = "ACT_HL2MP_SWIM"
 	},
 	[ "sitentry" ] = "ACT_BUSY_SIT_CHAIR_ENTRY",
 	[ "sitexit" ] = "ACT_BUSY_SIT_CHAIR_EXIT",
@@ -840,6 +845,11 @@ Anims.Female[ "default" ] = {
 		[ "walk" ] = "ACT_WALK_AIM_RIFLE_STIMULATED",
 		[ "run" ] = "ACT_RUN_AIM_RIFLE_STIMULATED"
 	},
+	[ "kickdoor" ] = {
+		["model"] = "models/police.mdl",
+		["type"] = "sequence",
+		["act"] = "kickdoorbaton"
+	},
 }
 Anims.Female[ "relaxed" ] = { 
 	[ "idle" ] = {
@@ -860,7 +870,7 @@ Anims.Female[ "relaxed" ] = {
 	[ "swim" ] = {
 		["model"] = "models/player/mossman.mdl",
 		["type"] = "sequence",
-		["act"] = "ACT_MP_SWIM"
+		["act"] = "ACT_HL2MP_SWIM"
 	},
 	[ "sitground" ] = {
 		["type"] = "sequence",
@@ -906,7 +916,7 @@ Anims.Female[ "headstrong" ] = {
 	[ "swim" ] = {
 		["model"] = "models/player/mossman.mdl",
 		["type"] = "sequence",
-		["act"] = "ACT_MP_SWIM"
+		["act"] = "ACT_HL2MP_SWIM"
 	},
 	[ "sitground" ] = "ACT_BUSY_SIT_GROUND",
 	[ "sitgroundentry" ] = "ACT_BUSY_SIT_GROUND_ENTRY",
@@ -947,7 +957,7 @@ Anims.Female[ "frustrated" ] = {
 	[ "swim" ] = {
 		["model"] = "models/player/mossman.mdl",
 		["type"] = "switch",
-		["act"] = "ACT_MP_SWIM"
+		["act"] = "ACT_HL2MP_SWIM"
 	},
 	[ "sitground" ] = {
 		["type"] = "sequence",

@@ -4,6 +4,14 @@ end)
 
 CAKE.Doors = {}
 
+
+function flyOpen(door)
+	local oldspeed = door:GetKeyValues()["speed"]
+	door:SetKeyValue("speed","500")
+	door:Fire("Open",0)
+	timer.Simple(.5,function() door:SetKeyValue("speed", oldspeed) end)
+end
+
 --Loads all door information
 function CAKE.LoadDoors()
 
