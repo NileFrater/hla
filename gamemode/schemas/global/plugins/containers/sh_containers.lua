@@ -125,6 +125,20 @@ function meta:HasItem( class )
 	return false
 end
 
+//// NOOBULATER's Code
+function meta:EmptySlots()
+	local count = 0
+	for i=1, self.Height do
+		for j=1, self.Width do
+			if self:IsSlotEmpty(j,i) then 
+				count = count + 1
+			end
+		end
+	end
+	return count
+end
+/// NOOBULATER's CODE
+
 function meta:HasItemID( itemid )
 	for i=1, self.Height do
 		for j=1, self.Width do

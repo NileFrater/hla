@@ -42,7 +42,6 @@ net.Receive( "Tiramisu.ReceiveUData", function( len )
 			end
 		end
 	end
-
 end)
 
 net.Receive( "Tiramisu.SendInventory", function( len )
