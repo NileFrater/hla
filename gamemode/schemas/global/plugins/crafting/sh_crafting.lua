@@ -23,7 +23,7 @@ CRAFTING["bat"] = {
 
 local meta = FindMetaTable( "Player" )
 
-function meta:IsNear(reqTbl)
+function meta:IsNear(reqTbl,reqTblKey)
 	if reqTbl == nil then return false end
 	-- props nearby
 	local nearProps = {}
@@ -33,20 +33,32 @@ function meta:IsNear(reqTbl)
 		end 
 	end
 	-- now to check those props 
-	local pass = false
-	for _,propTbl in pairs(reqTbl) do
-		pass = false
-		for _,model in pairs(propTbl) do
+	if reqTblKey == nil then
+		local pass = false
+		for _,propTbl in pairs(reqTbl) do
+			pass = false
+			for _,model in pairs(propTbl) do
+				for _,prop in pairs(nearProps) do
+					if string.lower(model) == string.lower(prop:GetModel() or "") then
+						pass = true
+					end
+				end
+			end
+			if pass == false then
+				return false
+			end
+		end
+	else
+		local pass = false
+		for _,model in pairs(reqTbl[reqTblKey]) do
 			for _,prop in pairs(nearProps) do
 				if string.lower(model) == string.lower(prop:GetModel() or "") then
 					pass = true
 				end
 			end
-
-			if pass == false then
-				return false
-			end
-
+		end
+		if pass == false then
+			return false
 		end
 	end
 	return true
@@ -118,9 +130,21 @@ local function potential(ply) -- this finds out what the play could potentially 
 	local addItem = false
 	for key,data in pairs(CRAFTING) do
 		addItem = false
-		print(ply:IsNear(data.requirements))
-		print(ply:HasItems(data.ingredients))
-		print(ply:HasRoom(key))
+		if ply:HasItems(data.ingredients) && ply:HasRoom(key) then
+			table.insert(potentialTbl, key)
+		end
+	end
+
+	return potentialTbl
+end
+
+local function availible(ply) -- this finds out what the play could potentially craft
+	ply = ply or LocalPlayer()
+	local container = CAKE.Containers[CAKE.Inventory]
+	local potentialTbl = {} -- what they can actually craft ( default = nothing )
+	local addItem = false
+	for key,data in pairs(CRAFTING) do
+		addItem = false
 		if ply:IsNear(data.requirements) && ply:HasItems(data.ingredients) && ply:HasRoom(key) then
 			table.insert(potentialTbl, key)
 		end
@@ -130,7 +154,7 @@ local function potential(ply) -- this finds out what the play could potentially 
 end
 
 if CLIENT then
-
+	local lastCraft = nil
 	local function buildRequirements(craftingData,backgroundPanel)
 		local reqForm = vgui.Create( "DForm" , backgroundPanel)
 		reqForm:SetName( "Requirements :" )
@@ -144,7 +168,6 @@ if CLIENT then
 		for _,propTbl in pairs(craftingData.requirements) do
 			local Icon = vgui.Create( "ContainerSlot_Icon", backgroundPanel)
 			Icon:SetSize(48, 48)
-
 			if table.Count(propTbl) > 1 then
 				Icon.propTbl = propTbl
 				Icon.key = 1
@@ -160,6 +183,12 @@ if CLIENT then
 			else
 				Icon:SetModel(propTbl[1])
 			end
+			Icon.PaintOver = function()
+								if !LocalPlayer():IsNear(craftingData.requirements,_) then
+									surface.SetDrawColor(155,55,55,155)
+									surface.DrawRect(0,0,Icon:GetWide(),Icon:GetTall())
+								end
+							end			
 			reqPanel:Add(Icon)
 		end
 		reqForm:AddItem(reqPanel)
@@ -168,6 +197,9 @@ if CLIENT then
 	end
 
 	local function buildIngredients(craftingData,backgroundPanel)
+
+		local inventory = CAKE.Containers[CAKE.Inventory]
+
 		local ingForm = vgui.Create( "DForm" , backgroundPanel)
 		ingForm:SetName( "Ingredients :" )
 		ingForm:SetSpacing( 5 )
@@ -182,6 +214,12 @@ if CLIENT then
 			Icon:SetSize(48, 48)
 
 			Icon:SetModel(CAKE.ItemData[ data[1] ].Model)
+			Icon.PaintOver = function()
+								if !inventory:HasItem( data[1] ) then
+									surface.SetDrawColor(155,55,55,155)
+									surface.DrawRect(0,0,Icon:GetWide(),Icon:GetTall())
+								end
+							end
 
 			if data[2] != nil && data[2] > 1 then
 				local iconLabel = vgui.Create("DLabel", Icon)
@@ -192,8 +230,16 @@ if CLIENT then
 				local labelY = Icon:GetTall() - iconLabel:GetTall() - (Icon:GetTall()*(1/8))
 
 				iconLabel:SetPos(labelX, labelY)
-			end
+				iconLabel.PaintOver = function() 
+											if !inventory:HasItemAmount(data[1] ,data[2]) then
+												iconLabel:SetTextColor(155,55,55,255)
+											else
+												iconLabel:SetTextColor(255,255,255,255)
+											end
 
+										end
+			end
+	
 			reqPanel:Add(Icon)
 		end
 		ingForm:AddItem(reqPanel)
@@ -239,7 +285,7 @@ if CLIENT then
 		local craftingData = CRAFTING[key]
 		local backgroundPanel = vgui.Create( "DPanelList", parent )
 		backgroundPanel:Dock( LEFT )
-		backgroundPanel:SetSize(280,360)
+		backgroundPanel:SetSize(280,340)
 		backgroundPanel:SetPos(10,30)
 		backgroundPanel.Paint = function() end
 		backgroundPanel:DockMargin( 0, 0, 5, 0 )
@@ -265,6 +311,7 @@ if CLIENT then
 		craftButton:SetText("Craft Item(s)")
 		craftButton.DoClick = function()
 			RunConsoleCommand("craftItem",key)
+			lastCraft = key
 			parent:Remove()
 		end
 
@@ -274,7 +321,7 @@ if CLIENT then
 	end
 	local function createList(parent)
 		craftingList = vgui.Create( "DListView" , parent )
-		craftingList:SetSize(280,360)
+		craftingList:SetSize(280,340)
 		craftingList:SetPos(10,30)
 		craftingList:AddColumn("Crafting Recipe")
 
@@ -293,6 +340,17 @@ if CLIENT then
 			end
 			local line = craftingList:AddLine(name)
 			line.key = key
+			local oldPaint = line.Paint
+			line.Paint = function() 
+				if !LocalPlayer():IsNear(CRAFTING[line.key].requirements) then
+					surface.SetDrawColor(155,55,55,255)
+					surface.DrawRect(0,0,line:GetWide(),line:GetTall()-1)
+				end
+				if lastCraft == line.key then
+					surface.SetDrawColor(155,155,155,155)
+					surface.DrawRect(0,0,line:GetWide(),line:GetTall()-1)
+				end
+			end
 		end
 
 		craftingList.OnClickLine = function( panel , line )
@@ -309,7 +367,7 @@ if CLIENT then
 		end
 		craftingFrame = vgui.Create( "DFrame" )
 		craftingFrame:SetTitle("Crafting Menu")
-		craftingFrame:SetSize(300,400)
+		craftingFrame:SetSize(300,380)
 		craftingFrame:Center()
 		craftingFrame:MakePopup()
 		craftingFrame.createList = createList
@@ -322,7 +380,7 @@ else
 
 	function meta:CraftItem(key)
 		local proceed = false
-		for _,value in pairs(potential(self)) do
+		for _,value in pairs(availible(self)) do
 			if value == key then
 				proceed = true
 			end
