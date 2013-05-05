@@ -59,7 +59,14 @@ else
 			ply:SetStamina( 100 )
 			timer.Create( "Tiramisu.StaminaRecovery." .. ply:SteamID(), 1, 0, function()
 				if IsValid( ply ) then
-					ply:SetStamina(ply:GetStamina() + CAKE.Stats.Stamina.BaseRegenRate)
+					local regen = CAKE.Stats.Stamina.BaseRegenRate
+					if ply:GetHunger() <= 30 then
+						regen = regen/2
+						if ply:GetHunger() <= 10 then
+							regen = 0
+						end
+					end
+					ply:SetStamina(ply:GetStamina() + regen)
 				end
 			end)
 		end
@@ -132,6 +139,46 @@ end
 
 function meta:AddStamina( amount )
 	self:SetStamina( self:GetStamina() + amount )
+end
+
+-- hunger
+
+if CLIENT then
+	usermessage.Hook( "Tiramisu.SendHunger", function(um)
+		if LocalPlayer().SetHunger then
+			LocalPlayer():SetHunger( um:ReadFloat() )
+		end
+	end)
+else
+
+	function thinkHook() 
+		for _,ply in pairs(player.GetAll()) do
+			if ply:IsCharLoaded() then
+				if ply.NHT == nil or ply.NHT <= CurTime() then
+					ply:SetHunger(ply:GetHunger() - 1)
+					ply.NHT = CurTime() + CAKE.Stats.Hunger.Decay
+				end
+			end
+		end
+	end
+	hook.Add("Think","Tirasmisu.HungerDecay", thinkHook)
+	hook.Add( "PlayerSpawn", "Tiramisu.ResetHunger", function( ply )
+		if ply:IsCharLoaded() then
+			ply:SetHunger( 100 )
+		end
+	end)
+end
+function meta:SetHunger( amount )
+	self.Hunger = math.Clamp( amount, 0, 100 )
+	if SERVER then
+		umsg.Start( "Tiramisu.SendHunger", self )
+			umsg.Float( self.Hunger )
+		umsg.End()
+	end
+end
+
+function meta:GetHunger()
+	return self.Hunger or 100
 end
 
 

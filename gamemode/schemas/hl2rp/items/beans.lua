@@ -18,6 +18,8 @@ function ITEM:Pickup(ply)
 end
 
 function ITEM:UseItem(ply)
+
+	ply:SetHunger(ply:GetHunger() + self.Hunger)	
 	self:Remove()
 
 end

@@ -738,7 +738,7 @@ function GM:CalcMainActivity( ply, velocity )
 			ply.InEmote = false
 			local len2d = velocity:Length2D()
 			if ply:GetNWBool( "aiming", false ) then
-				if len2d > 320 then
+				if len2d > 240 then
 					ply.CalcIdeal, ply.CalcSeqOverride = HandleSequence( ply, Anims[ ply:GetGender() ][ ply:GetPersonality() ][ "sprint" ] )
 					if SERVER then
 						if ply:GetAiming() and !ply.WasAimingBeforeRunning then
@@ -746,7 +746,7 @@ function GM:CalcMainActivity( ply, velocity )
 						end
 						ply:SetAiming( false )
 					end				
-				elseif len2d > 135 and len2d <= 320 then
+				elseif len2d > 135 and len2d <= 240 then
 					ply.CalcIdeal, ply.CalcSeqOverride =  HandleSequence( ply, Anims[ ply:GetGender() ][  holdtype ][ "run" ] )
 					if SERVER then
 						if ply:GetAiming() and !ply.WasAimingBeforeRunning then
@@ -772,13 +772,13 @@ function GM:CalcMainActivity( ply, velocity )
 					end
 				end
 			else
-				if len2d > 320 then
+				if len2d > 240 then
 					if !ply:GetNWBool( "specialmodel" ) then
 						ply.CalcIdeal, ply.CalcSeqOverride = HandleSequence( ply, Anims[ ply:GetGender() ][ ply:GetPersonality() ][ "sprint" ] )
 					else
 						ply.CalcIdeal, ply.CalcSeqOverride =  HandleSequence( ply, Anims[ ply:GetGender() ][  holdtype ][ "run" ] )
 					end
-				elseif len2d > 135 and len2d <= 320 then
+				elseif len2d > 135 and len2d <= 240 then
 					ply.CalcIdeal, ply.CalcSeqOverride =  HandleSequence( ply, Anims[ ply:GetGender() ][  holdtype ][ "run" ] )
 				elseif len2d > 0.1 and len2d <= 135 then
 					if ply.WasAimingBeforeRunning then

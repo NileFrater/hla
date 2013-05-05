@@ -21,6 +21,7 @@ end
 
 function ITEM:UseItem(ply)
 
+	ply:SetHunger(ply:GetHunger() + self.Hunger)
 	CAKE.ChangeMoney(ply, CAKE.ConVars["RationMoney"])
 	self:Remove()
 

@@ -844,6 +844,37 @@ function SKIN:PaintStaminaBar()
 	end
 end
 
+
+/*---------------------------------------------------------
+	Hunger Bar
+---------------------------------------------------------*/
+local hungerperc, hungeralpha
+hungeralpha = 230
+
+local offset = 20
+
+function PaintHungerBar()
+  hungerperc = LocalPlayer():GetHunger() / 100
+  if staminaalpha > 25 then
+    offset = 0
+  else
+    offset = 30
+  end
+    --hungerperc = math.Clamp( hungerperc - 0.001, 0, 1 )
+    draw.RoundedBoxEx( 4, ScrW()/2 - 150 + 10, 30 - offset, 300 - 20, 21, Color( 50, 50, 50, hungeralpha ), false, false, false, true )
+    surface.SetDrawColor( Color( 10, 10, 10, hungeralpha ) )
+    surface.DrawRect( ScrW()/2 - 147 + 10, 32 - offset, 293 - 20, 16 )
+   --  if hungerperc * 100 < 82 then
+   --  	draw.SimpleText(tostring(math.ceil(hungerperc * 100)) .. "%", "Tiramisu12Font", ScrW()/2 - 144 + 287 - 20, 34 - offset, Color(255,255,255,hungeralpha), TEXT_ALIGN_RIGHT, TEXT_ALIGN_LEFT)
+  	-- end
+    if hungerperc != 0 then
+      draw.RoundedBoxEx( 2, ScrW()/2 - 144 + 10, 35 - offset, (287 - 20) * hungerperc, 10, Color( 50, 200, 50, hungeralpha ), false, false, false, true )
+      draw.RoundedBoxEx( 2, ScrW()/2 - 140 + 10, 38 - offset, (280 - 20) * hungerperc, 4, Color( 255, 255, 255, math.Clamp( hungeralpha - 180, 0, 50) ), false, false, false, true )
+    end
+    draw.SimpleText("HUNGER", "Tiramisu12Font", ScrW()/2 - 144 + math.Clamp( 287 * hungerperc, 41, 287 - 20) + 10, 34 - offset, Color(255,255,255,hungeralpha), TEXT_ALIGN_RIGHT, TEXT_ALIGN_LEFT)
+end
+hook.Add( "HUDPaint", "Tiramisu.DrawHungerBar", PaintHungerBar)
+
 /*---------------------------------------------------------
 	Health Bar
 ---------------------------------------------------------*/

@@ -125,6 +125,10 @@ CAKE.Stats.Health.MaxRegenPerc = 60 --Percentage of health that can be regenerat
 CAKE.Stats.Health.Max = 10000 --Maximum possible health amount.
 CAKE.Stats.Health.Base = 100 --The base amount of health a player begins with.
 
+CAKE.Stats.Hunger = {}
+CAKE.Stats.Hunger.Decay = 1 --The amount of seconds it takes to decay one point of hunger
+
+
 --And finally, some clientside stuff.
 
 --VGUI

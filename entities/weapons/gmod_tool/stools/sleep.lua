@@ -25,7 +25,8 @@ function TOOL:LeftClick( trace ) // Putting a Prop to Sleep
 	if (trace.Entity:GetPhysicsObjectCount() > 2 ) then return false end // Greedy
 		
 	local ent = trace.Entity
-		
+	local ply = self:GetOwner()
+
 	if ( ent:GetMoveType() == MOVETYPE_NONE )  then return false end // Already asleep!
 	if ( ent:GetTable().NoTouch )  then return false end
 	
@@ -41,12 +42,10 @@ function TOOL:LeftClick( trace ) // Putting a Prop to Sleep
 	print( ent:GetTable().CreatorSteamID )
 	local spawntable = CAKE.SpawnTable[ent:GetTable().CreatorSteamID]
 	
-if(!spawntable) then
+		if(!spawntable) then
 			CAKE.CreateSpawnTable(ply)
-			spawntable = CAKE.SpawnTable[CAKE.FormatText(ent:GetTable().LocalPlayer:SteamID())]
+			spawntable = CAKE.SpawnTable[CAKE.FormatText(ent:GetTable().CreatorSteamID)]
 		
-
-
 		local spawned = 0
 		for k, v in pairs(spawntable.props) do
 			if(v != nil and v:IsValid()) then
@@ -85,7 +84,8 @@ function TOOL:RightClick( trace ) // And Waking it up
 	if (trace.Entity:GetMoveType() != MOVETYPE_NONE )  then return false end
     
 	local ent = trace.Entity
-    
+    local ply = self:GetOwner()
+
 	ent:GetTable().NoTouch = false
 	ent:SetMoveType(ent:GetTable().OldMoveType)
 	local phys = ent:GetPhysicsObject()
@@ -95,9 +95,9 @@ function TOOL:RightClick( trace ) // And Waking it up
 	phys:EnableDrag( true )
 	phys:Wake()
 	
-local spawntable = CAKE.SpawnTable[CAKE.FormatText(ent:GetTable().CreatorSteamID)]
+	local spawntable = CAKE.SpawnTable[CAKE.FormatText(ent:GetTable().CreatorSteamID)]
 
-if(!spawntable) then
+	if(!spawntable) then
 			CAKE.CreateSpawnTable(ply)
 			spawntable = CAKE.SpawnTable[CAKE.FormatText(ent:GetTable().CreatorSteamID)]
 

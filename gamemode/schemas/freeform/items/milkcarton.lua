@@ -18,6 +18,7 @@ end
 
 function ITEM:UseItem(ply)
 
+	ply:SetHunger(ply:GetHunger() + self.Hunger)
 	ply:SetHealth(math.Clamp(ply:Health() + 5, 0, ply:GetMaxHealth()))
 	self:Remove()
 

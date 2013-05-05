@@ -20,6 +20,7 @@ end
 function ITEM:UseItem(ply)
 
 	ply:TakeItem("darkbeer")
+	ply:SetHunger(ply:GetHunger() + self.Hunger)
 	CAKE.DrugPlayer(ply, 3)
 	self:Remove()
 

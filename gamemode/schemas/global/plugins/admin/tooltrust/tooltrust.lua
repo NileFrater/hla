@@ -275,9 +275,12 @@ end
 
 function GM:PlayerSpawnedProp(ply, mdl, ent)
 
-	if ( ent:GetPhysicsObject():GetMass() > 400 and !CAKE.PlayerRank(ply) >= 3 )  then
-		CAKE.SendChat(ply, "This prop is too big to be spawned.")
-		return
+	if ( ent:GetPhysicsObject():GetMass() > 500 )  then
+		if ( CAKE.PlayerRank(ply) < 3) then
+			CAKE.SendChat(ply, "This prop is too big to be spawned.")
+			ent:Remove()
+			return
+		end
 	end
 
 	local spawntable = CAKE.SpawnTable[CAKE.FormatText(ply:SteamID())]
