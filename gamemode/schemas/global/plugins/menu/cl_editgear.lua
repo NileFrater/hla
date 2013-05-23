@@ -692,7 +692,7 @@ function StartGearEditor( entity, item, bone, offset, angle, scale, skin, name, 
 			zscale:SetValue( scale.z )
 		end
 		ScaleList:AddItem( resetbutton )
-		PropertySheet:AddSheet( "Scale", ScaleList, "gui/silkicons/magnifier", false, false, "Edit gear's scale")
+--		PropertySheet:AddSheet( "Scale", ScaleList, "gui/silkicons/magnifier", false, false, "Edit gear's scale")
 
 		EditorFrame.Close = function()
 			CAKE.Query( "Save Changes for " .. itemname:GetValue(), "Save",

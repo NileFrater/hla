@@ -820,6 +820,7 @@ end
 local staminaperc, staminaalpha
 staminaalpha = 230
 function SKIN:PaintStaminaBar()
+	 if LocalPlayer():GetViewEntity():GetClass() == "npc_combine_camera" then return end
 	if CAKE.MinimalHUD:GetBool() then
 		if LocalPlayer().TiramisuStaminaRegen and staminaalpha != 230 then
 			staminaalpha = Lerp( 10 * RealFrameTime(), staminaalpha, 230 )
@@ -854,6 +855,7 @@ hungeralpha = 230
 local offset = 20
 
 function PaintHungerBar()
+ if LocalPlayer():GetViewEntity():GetClass() == "npc_combine_camera" then return end
   hungerperc = LocalPlayer():GetHunger() / 100
   if staminaalpha > 25 then
     offset = 0

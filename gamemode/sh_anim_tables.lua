@@ -1,4 +1,8 @@
 Anims.Male = {}
+if CLIENT then
+	util.PrecacheModel("models/breen.mdl")
+end
+
 if CAKE.ConVars[ "UseEnhancedCitizens" ] then
 	Anims.Male[ "models" ] = {
 		"models/bloo_ltcom/citizens/male_01.mdl",
@@ -13,6 +17,7 @@ else
 		"models/Barney.mdl"
 	}
 end
+
 Anims.Male.Emotes = {
 	["wave"] = {
 		["anim"] = {
@@ -91,7 +96,7 @@ Anims.Male[ "default" ] = {
 	},
 	[ "swim" ] = {
 		["model"] = "models/player/breen.mdl",
-		["type"] = "switch",
+		["type"] = "sequence",
 		["act"] = "ACT_HL2MP_SWIM"
 	},
 	[ "sitground" ] = "ACT_BUSY_SIT_GROUND",
@@ -826,7 +831,6 @@ Anims.Female[ "default" ] = {
 	},
 	[ "sitentry" ] = "ACT_BUSY_SIT_CHAIR_ENTRY",
 	[ "sitexit" ] = "ACT_BUSY_SIT_CHAIR_EXIT",
-	[ "swim" ] = "ACT_GLIDE",
 	[ "sitground" ] = "ACT_BUSY_SIT_GROUND",
 	[ "sitgroundentry" ] = "ACT_BUSY_SIT_GROUND_ENTRY",
 	[ "sitgroundexit" ] = "ACT_BUSY_SIT_GROUND_EXIT",

@@ -95,7 +95,9 @@ local mYaw = GetConVar( "m_yaw" )
 local middleDown = false
 
 hook.Add( "CreateMove", "TiramisuCreateMoveCamera", function( cmd )
-
+	if LocalPlayer():GetViewEntity():GetClass() == "npc_combine_camera" then
+		return false
+	end
 	if LocalPlayer():GetNWBool("specialmodel") then
 		CAKE.UseHeadRotation = false
 		if CAKE.Thirdperson:GetBool() then
@@ -296,7 +298,17 @@ end )
 
 local head, headang
 hook.Add("CalcView", "TiramisuThirdperson", function(ply, pos , angles ,fov)
+	if ply:GetViewEntity():GetClass() == "npc_combine_camera" then
+		local att = ply:GetViewEntity():LookupAttachment("eyes")
+		CAKE.CameraAngle, CAKE.CameraPos = ply:GetViewEntity():GetAttachment(att)["Ang"],ply:GetViewEntity():GetAttachment(att)["Pos"]
 
+	    local view = {}
+	    view.origin = CAKE.CameraPos
+	    view.angles = CAKE.CameraAngle
+	    view.fov = fov
+
+		return view
+	end
 	if IronsightsOn() or ply:InVehicle() then
 		CAKE.CameraPos = pos
 		return GAMEMODE:CalcView(ply, pos , angles ,fov)

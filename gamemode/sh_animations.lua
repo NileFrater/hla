@@ -544,7 +544,9 @@ function GM:HandlePlayerSwimming( ply, velocity ) --Handles swimming.
 	-- else
 	-- 	ply.CalcIdeal, ply.CalcSeqOverride = HandleSequence( ply, Anims[ ply:GetGender() ][ "default" ][ "fly" ] )
 	-- end
+
 	ply.CalcIdeal, ply.CalcSeqOverride = HandleSequence( ply, Anims[ ply:GetGender() ][ "default" ][ "swim" ] )
+	
 	if SERVER then
 		ply:SetAiming(false)
 	end
