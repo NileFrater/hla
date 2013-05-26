@@ -15,6 +15,8 @@ function ccaPlaceCam(ply,cmd,args)
 	ent:SetKeyValue( "spawnflags", 82)
 	ent:Spawn()
 	ent:SetDTString(1,args[2])
+	ent:SetDTString(2,"on")
+	ent:SetDTString(3,"off")
 end
 concommand.Add("rp_placecam", ccaPlaceCam)
 

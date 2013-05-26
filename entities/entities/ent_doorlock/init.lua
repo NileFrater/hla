@@ -20,6 +20,7 @@ function ENT:Initialize()
 end
 
 function ENT:Unattach()
+	local ori = self.ori
 	local eff = EffectData()
 	eff:SetOrigin(self.Entity:GetPos())
 	util.Effect("ManhackSparks",eff)
@@ -27,7 +28,7 @@ function ENT:Unattach()
 	self.Entity:SetParent(nil)
 
 	local newDoor = self.door
-	self:SetPos(newDoor:LocalToWorld(Vector(7,36.8,-2)))
+	self:SetPos(newDoor:LocalToWorld(Vector(7 * ori,36.8 + (ori * -3.6 + 3.6),-2)))
 	local ang = newDoor:GetAngles()
 
 	ang.y = ang.y - 90
@@ -42,17 +43,21 @@ function ENT:Unattach()
 	else
 		self.Entity:Remove()
 	end
+	self.door.doorlock = nil
 	self.door = nil
 end
-
-function ENT:SetDoor(newDoor)
+ENT.ori = nil
+function ENT:SetDoor(newDoor, ori)
+	ori = ori or 1
 	self.door = newDoor
-	self:SetPos(newDoor:LocalToWorld(Vector(7,36.8,-2)))
+	self.door.doorlock = self
+	self:SetPos(newDoor:LocalToWorld(Vector(7 * ori,36.8 + (ori * -3.6 + 3.6),-2)))
 	local ang = newDoor:GetAngles()
 
-	ang.y = ang.y - 90
+	ang.y = ang.y - 90 * ori
 	self:SetAngles(ang)
 	self:SetParent(self.door)
+	self.ori = ori
 end
 
 function ENT:OnTakeDamage(dmginfo)
@@ -66,9 +71,11 @@ function ENT:OnTakeDamage(dmginfo)
 	self.Entity:SetHealth(self.Entity:Health() - dmginfo:GetDamage())
 end
 
+ENT.cd = 0
+
 function ENT:Use(activator)
-	if IsValid(self.door) && activator:IsPlayer() then 
-		if !self:GetDTBool("1") && activator:IsCP() then
+	if IsValid(self.door) && activator:IsPlayer() && self.cd < CurTime() then 
+		if !self:GetDTBool("1") then
 			self.door:Fire("Unlock",0)
 			self.door:Fire("Toggle",0)
 			self.door:Fire("lock",0)
@@ -76,5 +83,23 @@ function ENT:Use(activator)
 		else
 			self:EmitSound("buttons/button10.wav")
 		end
+		self.cd = CurTime() + 0.5
+	end
+end  
+
+function ENT:OnRemove()
+	if self.door != nil then
+		self.door.doorlock = nil
+	end
+	self.door = nil
+end
+
+local function unlockDoor( ply, entity )
+	if IsValid(entity) && CAKE.IsDoor(entity) && IsValid(entity.doorlock) then
+		if ply:IsCp() && ply:KeyDown("SPRINT") then
+			entity.doorlock:SetDTBool("1",false)
+		end
 	end
 end
+ 
+hook.Add( "PlayerUse", "combineDoorLockUnlockerFromOtherSide", unlockDoor )

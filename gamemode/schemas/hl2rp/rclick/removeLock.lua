@@ -1,5 +1,5 @@
-RCLICK.Name = "Remove Lock"
-RCLICK.SubMenu = "DoorLock"
+RCLICK.Name = "Remove Combine Lock"
+RCLICK.SubMenu = "Combine Lock"
 function RCLICK.Condition(target)
 	if IsValid(target) and target:GetClass() == "ent_doorlock" then return true end
 

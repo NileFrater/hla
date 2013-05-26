@@ -1,5 +1,5 @@
 RCLICK.Name = "Place Combine Camera"
-RCLICK.SubMenu = "CCA Tech"
+RCLICK.SubMenu = "Civil Protection Technology"
 
 function RCLICK.Condition(target)
 	if target == LocalPlayer() && LocalPlayer():IsCP() then return true end

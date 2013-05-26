@@ -18,7 +18,7 @@ local function initializeCameraControls(parent)
 	local screenPanel = vgui.Create("DPanel")
 	screenPanel:SetSize(ScrW(), ScrH())
 	screenPanel.Paint = function()
-		if LocalPlayer():GetViewEntity():GetClass() != "npc_combine_camera" then
+		if LocalPlayer():GetViewEntity():GetClass() != "npc_combine_camera" or LocalPlayer():GetViewEntity():GetDTString(2) == "off" then
 			surface.SetDrawColor(0,0,0,255)
 			surface.DrawRect(0,0,screenPanel:GetWide(),screenPanel:GetTall())
 		end
@@ -31,16 +31,20 @@ local function initializeCameraControls(parent)
 	label:SetFont("CamLocation")
 	label.Paint = function()
 		if LocalPlayer():GetViewEntity():GetClass() != "npc_combine_camera" then
-			label:SetText("No Camera's Availible")
+			label:SetText("No Cameras Available")
+			label:SizeToContents()
+			
+		elseif LocalPlayer():GetViewEntity():GetDTString(2) == "off" then
+			label:SetText("Camera Offline")
 			label:SizeToContents()
 		else
-			label:SetText("Location : "..LocalPlayer():GetViewEntity():GetDTString(1))
+			label:SetText(LocalPlayer():GetViewEntity():GetDTString(1)) // Sets Camera Location
 			label:SizeToContents()
 		end
 	end
 
-	local xpos = screenPanel:GetWide() * 0.33 - 50
-	local ypos = screenPanel:GetTall() - 30 - 20
+	local xpos = screenPanel:GetWide() * 0.33 - 60
+	local ypos = screenPanel:GetTall() - 30 - 10
 	local buttonWide = 100
 	local buttonTall = 30
 
@@ -48,6 +52,19 @@ local function initializeCameraControls(parent)
 	button:SetSize(buttonWide, buttonTall)
 	button:SetText("Toggle Camera")
 	button:SetPos(xpos, ypos)
+	button.DoClick = function() 
+		RunConsoleCommand("rp_cameraToggle") 
+	end
+	
+	xpos = xpos + (screenPanel:GetWide() * 0.33) *.5
+	
+	local button = vgui.Create("DButton", screenPanel)
+	button:SetSize(buttonWide, buttonTall)
+	button:SetText("Alert!")
+	button:SetPos(xpos, ypos)
+	button.DoClick = function() 
+		RunConsoleCommand("rp_cameraAlert") 
+	end
 
 	xpos = xpos + (screenPanel:GetWide() * 0.33) *.5
 
@@ -73,7 +90,7 @@ local function initializeCameraControls(parent)
 
 	local button = vgui.Create("DButton", screenPanel)
 	button:SetSize(buttonWide, buttonTall)
-	button:SetText("Close")
+	button:SetText("Exit")
 	button:SetPos(screenPanel:GetWide() - buttonWide - 20, buttonTall + 5)
 	button.DoClick = function() 
 		screenPanel:Remove() 
@@ -318,7 +335,40 @@ else
 		end
 	end
 	concommand.Add("rp_cameraOpen", cameraOpen)
-
+	
+	local function cameraAlert(ply,cmd,args)
+		local cameras = ents.FindByClass("npc_combine_camera")
+		if table.Count(cameras) > 0 then
+			if ply.ccacamkey == nil then
+				ply.ccacamkey = 1
+			end
+			if cameras[ply.ccacamkey]:GetDTString(3) == "on" then
+			cameras[ply.ccacamkey]:Fire("SetIdle")
+			cameras[ply.ccacamkey]:SetDTString(3,"off")
+			else
+			cameras[ply.ccacamkey]:Fire("SetAngry")
+			cameras[ply.ccacamkey]:SetDTString(3,"on")
+			end
+		end
+	end
+	concommand.Add("rp_cameraAlert", cameraAlert)
+	
+	local function cameraToggle(ply,cmd,args)
+		local cameras = ents.FindByClass("npc_combine_camera")
+		if table.Count(cameras) > 0 then
+			if ply.ccacamkey == nil then
+				ply.ccacamkey = 1
+			end
+			cameras[ply.ccacamkey]:Fire("toggle")
+			if cameras[ply.ccacamkey]:GetDTString(2) == "on" then
+			cameras[ply.ccacamkey]:SetDTString(2,"off")
+			else
+			cameras[ply.ccacamkey]:SetDTString(2,"on")
+			end
+		end
+	end
+	concommand.Add("rp_cameraToggle", cameraToggle)
+	
 	local function cameraNext(ply,cmd,args)
 		local cameras = ents.FindByClass("npc_combine_camera")
 		if table.Count(cameras) > 0 then

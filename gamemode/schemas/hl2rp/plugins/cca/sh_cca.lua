@@ -13,3 +13,14 @@ function meta:IsCP()
 	return false
 end
 
+// If enabled in config, then cameras will take no damage.
+function CameraInvincibility(npc, hit, dmg)
+	if CAKE.ConVars["CameraInvulnerable"] then
+		if npc:GetClass() == 'npc_combine_camera' then
+			dmg:ScaleDamage(0)
+		end
+	else
+end
+end
+hook.Add('ScaleNPCDamage', 'CAKE.CameraDamage', CameraDamage)
+
