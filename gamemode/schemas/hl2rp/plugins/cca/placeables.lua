@@ -20,14 +20,19 @@ function ccaPlaceCam(ply,cmd,args)
 end
 concommand.Add("rp_placecam", ccaPlaceCam)
 
-function ccaToggleForcefield(ply,cmd,args)
+function ccaDisableForcefield(ply,cmd,args)
+	local ent = ents.GetByIndex(tonumber(args[1]))
+	local time = tonumber(args[2])
+	if !IsValid(ent) then return false end
+	if !IsValid(ent.forcefield) then return false end
+	ent.forcefield:Disable(time)
+end
+concommand.Add("rp_disableff", ccaDisableForcefield)
+
+function ccaEnableForcefield(ply,cmd,args)
 	local ent = ents.GetByIndex(tonumber(args[1]))
 	if !IsValid(ent) then return false end
 	if !IsValid(ent.forcefield) then return false end
-	if IsValid(ent.forcefield) && ent.forcefield:GetSolid() == SOLID_OBB then
-		ent.forcefield:ToggleSolid()
-		timer.Simple(10, function() if IsValid(ent.forcefield) then ent.forcefield:ToggleSolid() end end)
-		return true
-	end
+	ent.forcefield:Enable()
 end
-concommand.Add("rp_toggleshield", ccaToggleForcefield)
+concommand.Add("rp_enableff", ccaEnableForcefield)

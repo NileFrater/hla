@@ -4,7 +4,6 @@ SCHEMA.Description = "Pretend you have a life!"
 SCHEMA.Base = "global"
 
 CAKE.ConVars["RationMoney"] = 15 -- How much money you get out of a ration
-CAKE.ConVars["CameraInvulnerable"] = false -- If true, cameras cannot take damage.
 CAKE.MaxRations = 60 -- The maximum amount of rations available
 CAKE.RationTimer = 10 --In minutes. The time it takes for rations to be resupplied
 

@@ -73,13 +73,17 @@ end
 
 ENT.cd = 0
 
+function ENT:Open()
+	self.door:Fire("Unlock",0)
+	self.door:Fire("Toggle",0)
+	self.door:Fire("lock",0)
+	self:EmitSound("buttons/button9.wav")
+end
+
 function ENT:Use(activator)
 	if IsValid(self.door) && activator:IsPlayer() && self.cd < CurTime() then 
 		if !self:GetDTBool("1") then
-			self.door:Fire("Unlock",0)
-			self.door:Fire("Toggle",0)
-			self.door:Fire("lock",0)
-			self:EmitSound("buttons/button9.wav")
+			self:Open()
 		else
 			self:EmitSound("buttons/button10.wav")
 		end
@@ -96,8 +100,10 @@ end
 
 local function unlockDoor( ply, entity )
 	if IsValid(entity) && CAKE.IsDoor(entity) && IsValid(entity.doorlock) then
-		if ply:IsCp() && ply:KeyDown("SPRINT") then
+		if ply:IsCP() && ply:KeyDown(IN_SPEED) then
 			entity.doorlock:SetDTBool("1",false)
+			entity.doorlock:Open()
+			self.cd = CurTime() + 0.5
 		end
 	end
 end

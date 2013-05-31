@@ -5,10 +5,15 @@ local mat = Material("effects/combineshield/comshieldwall")
 function ENT:RenderOverride()
 
 end
-local selfe
-function ENT:Initialize()
-	selfe = self
-end
+
+ENT.cd = 0
+
+function ENT:Think() 
+	if self:GetDTBool(1) && LocalPlayer():GetPos():Distance(self:GetPos()) < 700 && self.cd < CurTime() then
+		self:EmitSound("ambient/energy/force_field_loop1.wav", 50, 100)
+		self.cd = CurTime() + 4
+	end
+end 
 
 function ENT:Draw()
 

@@ -9,7 +9,6 @@ function ENT:Draw()
 	local newposition, newangles = LocalToWorld( self:GetDTVector(1), self:GetDTAngle(1), position, angles )
 	self:SetPos(newposition)
 	self:SetAngles(newangles)
-
 	local mat = Matrix()
 	mat:Scale(self:GetDTVector(2))
 	self:EnableMatrix( "RenderMultiply", mat )
@@ -28,6 +27,7 @@ function ENT:Draw()
 			return
 		end
 	end
+
 	self:DrawModel()
 	self:DrawShadow( false )
 	

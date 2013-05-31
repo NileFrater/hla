@@ -21,13 +21,42 @@ function ENT:Initialize()
 
 end
 
+function ENT:Think() 
+	if self.disabledUntil == nil then return false end
+	if IsValid(self.user) && self.user:KeyDown( IN_USE ) && self.user:GetPos():Distance(self:GetPos()) < 300 then 
+		self:Disable(1)
+	end
+	if self.disabledUntil <= CurTime() then
+		self:Enable()
+	end
+end
+
+function ENT:Enable()
+	self:SetSolid(SOLID_OBB)
+	self:SetDTBool(1, true)		
+	self.disabledUntil = nil	
+end
+
+function ENT:Disable( seconds )
+	self:SetSolid(SOLID_NONE)
+	self:SetDTBool(1, false)
+	if seconds != nil then
+		self.disabledUntil = CurTime() + seconds
+	end
+end
+
 function ENT:ToggleSolid()
 	if self:GetSolid() != SOLID_OBB then
-		self:SetSolid(SOLID_OBB)
-		self:SetDTBool(1, true)		
+		self:Enable()
 	else
-		self:SetSolid(SOLID_NONE)
-		self:SetDTBool(1, false)		
+		self:Disable()
+	end
+end
+ 
+function ENT:Use( activator )
+	if IsValid(activator) && activator:IsPlayer() && activator:IsCP() then
+		self:Disable( 1 )
+		self.user = activator
 	end
 end
 
