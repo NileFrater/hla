@@ -1,5 +1,7 @@
 local targetent, lookattarget, ang, sa, ca, hitpos
 local tracedata = {}
+//local bak = hook.GetTable().CalcView.TiramisuCalcView
+print( bak )
 CAKE.CameraPos = Vector(0, 0, 0)
 CAKE.CameraAngle = Angle(0, 0, 0)
 CAKE.LastViewAng = Angle(0, 0, 0)
@@ -292,6 +294,10 @@ hook.Add( "CreateMove", "TiramisuCreateMoveCamera", function( cmd )
 		CAKE.UseHeadRotation = false
 	end
 end )
+--[[hook.Add('CalcView', 'TiramisuCalcView', function(ply, ...) 
+if IsValid(ply:GetVehicle().APC) then return end 
+return bak(ply, ...) end)]]--
+
 
 local head, headang
 hook.Add("CalcView", "TiramisuThirdperson", function(ply, pos , angles ,fov)

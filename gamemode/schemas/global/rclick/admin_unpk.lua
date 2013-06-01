@@ -60,7 +60,7 @@ function RCLICK.Click(target,ply)
 		for k, v in pairs (checkboxes) do
 			if v and v:GetChecked() then
 				for k, v in pairs(char) do
-				table.
+				end
 			end
 		end
 		ply:ConCommand(str)

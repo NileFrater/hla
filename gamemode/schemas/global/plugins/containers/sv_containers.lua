@@ -190,6 +190,7 @@ concommand.Add( "rp_opencontainer", function(ply, cmd, args)
 	local uid = args[1]
 	if uid then
 		CAKE.OpenContainer( ply, uid )
+		ply:EmitSound("items/ammocrate_open.wav");
 	end
 end)
 
@@ -197,6 +198,7 @@ concommand.Add( "rp_closecontainer", function(ply, cmd, args)
 	local uid = args[1]
 	if uid then
 		CAKE.CloseContainer( ply, uid )
+		ply:EmitSound("items/ammocrate_close.wav");
 	end
 end)
 

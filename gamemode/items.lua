@@ -174,6 +174,7 @@ function ccPickupItem( ply, cmd, args )
 
 	if( item != nil and item:IsValid( ) and item:GetClass( ) == "item_prop" and item:GetPos( ):Distance( ply:GetShootPos( ) ) <= 200 ) then
 		item:Pickup( ply )
+		ply:EmitSound("items/ammo_pickup.wav");
 		ply:GiveItem( item.Class, item:GetNWString("id") )
 	end
 

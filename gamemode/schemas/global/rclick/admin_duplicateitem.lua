@@ -11,7 +11,7 @@ function RCLICK.Click(target,ply)
 
 	local DuplicatePanel = vgui.Create( "DFrame" )
 	DuplicatePanel:SetPos(gui.MouseX(), gui.MouseY())
-	DuplicatePanel:SetSize( 200, 175 )
+	DuplicatePanel:SetSize( 300, 175 )
 	DuplicatePanel:SetTitle( "Duplicate this item how many times?")
 	DuplicatePanel:SetVisible(true)
 	DuplicatePanel:SetDraggable(true)
