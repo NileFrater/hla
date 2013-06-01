@@ -95,7 +95,6 @@ local mYaw = GetConVar( "m_yaw" )
 local middleDown = false
 
 hook.Add( "CreateMove", "TiramisuCreateMoveCamera", function( cmd )
-
 	if LocalPlayer():GetNWBool("specialmodel") then
 		CAKE.UseHeadRotation = false
 		if CAKE.Thirdperson:GetBool() then

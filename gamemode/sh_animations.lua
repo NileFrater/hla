@@ -538,7 +538,7 @@ function GM:HandlePlayerSwimming( ply, velocity ) --Handles swimming.
 		ply.m_bInSwim = false
 		return false 
 	end
-	
+
 	-- if !CAKE.ConVars[ "LinuxHotfix" ] then
 	-- 	ply.CalcIdeal, ply.CalcSeqOverride = HandleSequence( ply, Anims[ ply:GetGender() ][ "default" ][ "swim" ] )
 	-- else
@@ -642,10 +642,10 @@ function GM:HandleExtraActivities( ply ) --Drop in here everything additional yo
 		end
 	end
 
-	if ply:GetNWBool( "kickingdoor", false ) then
+	--[[if ply:GetNWBool( "kickingdoor", false ) then
 		ply.CalcIdeal, ply.CalcSeqOverride = HandleSequence( ply, Anims[ ply:GetGender() ][ "default" ][ "kickdoor" ] )
 		return true
-	end
+	end]]--
 	
 	if ply:GetNWBool( "sittingground", false ) then
 		if !ply.IsSittingGround then

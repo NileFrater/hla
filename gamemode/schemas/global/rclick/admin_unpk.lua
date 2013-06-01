@@ -1,19 +1,24 @@
-RCLICK.Name = "Set Business"
+RCLICK.Name = "Un-Permanent-Kill"
 RCLICK.SubMenu = "Admin"
 
 function RCLICK.Condition(target)
 
-	if target:IsTiraPlayer() and LocalPlayer():GetNWInt( "TiramisuAdminLevel", 0 ) >= 2 then return true end
+	if  LocalPlayer():GetNWInt( "TiramisuAdminLevel", 0 ) >= 2 then return true end
 
 end
 
 function RCLICK.Click(target,ply)
 
-	target = target:IsTiraPlayer()
+	CAKE.StringRequest( "Un-Permanent Kill a Character", "Enter the player's SteamID", "STEAM_0:0:0", function( text )
+		local SteamID = text
+	end,
+	function() end, "Accept", "Cancel")
+ 
 	local checkboxes = {}
+	local char = CAKE.PlayerData[ SteamID ][ "characters" ]
 
 	local Window = vgui.Create( "DFrame" )
-	Window:SetTitle( "Choose Business Access" )
+	Window:SetTitle( "Select Characters" )
 	Window:SetDraggable( false )
 	Window:ShowCloseButton( false )
 
@@ -22,19 +27,22 @@ function RCLICK.Click(target,ply)
 	InnerPanel:SetPadding( 5 )
 
 	local Text = vgui.Create( "DLabel" )
-	Text:SetText( "Set which business permissions should " .. target:Nick() .. " have." )
+	Text:SetText( "Characters without ticks are alive, characters with ticks are banned." )
 	Text:SizeToContents()
 	Text:SetContentAlignment( 5 )
 	Text:SetTextColor( color_white )
 	InnerPanel:AddItem( Text )
 
-	for k, v in pairs(BusinessLevels) do
+	for k, v in pairs(char) do
 		local checkbox = vgui.Create( "DCheckBoxLabel" )
-		checkbox:SetText(v.Name)
+		checkbox:SetText(v["name"])
 		checkbox:SetContentAlignment( 5 )
+		if v["banned"] == 1 then
 		checkbox:SetValue( 0 )
+		else checkbox:SetValue( 1 )
+		end
 		checkbox:SizeToContents()
-		checkbox.BusinessLevel = k
+		checkbox.char = k
 		InnerPanel:AddItem( checkbox )
 		table.insert(checkboxes, checkbox)
 	end
@@ -49,10 +57,10 @@ function RCLICK.Click(target,ply)
 	Button:SetWide( Button:GetWide() + 20 )
 	Button:SetPos( 5, 5 )
 	Button.DoClick = function()
-		local str = "rp_admin addbusiness " .. CAKE.FormatText( target:SteamID() ) .. " "
 		for k, v in pairs (checkboxes) do
 			if v and v:GetChecked() then
-				str = str .. v.BusinessLevel .. " "
+				for k, v in pairs(char) do
+				table.
 			end
 		end
 		ply:ConCommand(str)

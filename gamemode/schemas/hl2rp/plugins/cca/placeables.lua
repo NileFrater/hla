@@ -36,3 +36,4 @@ function ccaEnableForcefield(ply,cmd,args)
 	ent.forcefield:Enable()
 end
 concommand.Add("rp_enableff", ccaEnableForcefield)
+

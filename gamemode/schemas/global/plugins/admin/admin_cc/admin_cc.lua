@@ -71,6 +71,44 @@ local function Admin_Ban( ply, cmd, args )
 	
 end
 
+-- rp_admin charban "name" "reason" minutes
+local function Character_Ban( ply, cmd, args )
+
+	if( #args != 1 ) then
+	
+		CAKE.SendChat( ply, "Invalid number of arguments! ( rp_admin charban \"name\"" )
+		return
+		
+	end
+	
+	local plyname = args[ 1 ]
+	
+	
+	local pl = CAKE.FindPlayer( plyname )
+	
+	if( pl and pl:IsValid( ) and pl:IsTiraPlayer( ) ) then
+	
+		local UniqueID = pl:UserID( )
+		
+		local target = CAKE.FindPlayer(args[1])
+		if IsValid(target) then
+		if CAKE.GetCharField( target, "banned" ) == 0 then
+		CAKE.SendChat( ply, "This character (" .. plyname .. ") is already banned/killed!" )
+		return
+		else
+		CAKE.SetCharField( target, "banned", 0 )
+		CAKE.AnnounceAction( ply, "permanently killed " .. pl:Nick( ) )
+		end
+	end
+		
+	else
+	
+		CAKE.SendChat( ply, "Cannot find " .. plyname .. "!" )
+		
+	end
+	
+end
+
 --rp_admin observe. No arguments.
 local function Admin_Observe( ply, cmd, args )
 
@@ -562,7 +600,7 @@ end
 -- Let's make some ADMIN COMMANDS!
 function PLUGIN.Init( )
 
-	CAKE.ConVars[ "MaxBan" ] = 300 -- What is the maximum ban limit for regular admins?
+	CAKE.ConVars[ "MaxBan" ] = 3000 -- What is the maximum ban limit for regular admins?
 	
 	--Default admin ranks. You can type on console either the full name of the rank or it's shortened version
 	CAKE.AddAdminRank( "Event Coordinator", 2, "ec")
@@ -579,6 +617,7 @@ function PLUGIN.Init( )
 	CAKE.AdminCommand( "setmodel", Admin_SetModel, "Set someone's model to something", true, true, 2 )
 	CAKE.AdminCommand( "setpermamodel", Admin_SetPermaModel, "Set someone's model permanently to something", true, true, 2 )
 	CAKE.AdminCommand( "ban", Admin_Ban, "Ban someone on the server", true, true, 3 )
+	CAKE.AdminCommand( "charban", Character_Ban, "Ban someone on the server", true, true, 3 )
 	CAKE.AdminCommand( "superban", Admin_SuperBan, "Ban someone on the server ( Permanent allowed )", true, true, 4 )
 	CAKE.AdminCommand( "setconvar", Admin_SetConVar, "Set a Convar", true, true, 4 )
 	CAKE.AdminCommand( "listvars", Admin_ListVars, "List convars", true, true, 4 )

@@ -1,4 +1,4 @@
-RCLICK.Name = "Enable"
+RCLICK.Name = "Enable Field"
 RCLICK.SubMenu = "Force Field"
 function RCLICK.Condition(target)
 	if !LocalPlayer():IsCP() then return false end

@@ -1,10 +1,12 @@
 Anims.Male = {}
+
 if CAKE.ConVars[ "UseEnhancedCitizens" ] then
 	Anims.Male[ "models" ] = {
 		"models/bloo_ltcom/citizens/male_01.mdl",
 		"models/breen.mdl",
 		"models/player/breen.mdl",
-		"models/Barney.mdl"
+		"models/Barney.mdl",
+		"models/Police.mdl"
 	}
 else
 	Anims.Male[ "models" ] = {
@@ -13,6 +15,7 @@ else
 		"models/Barney.mdl"
 	}
 end
+
 Anims.Male.Emotes = {
 	["wave"] = {
 		["anim"] = {
@@ -44,6 +47,24 @@ Anims.Male.Emotes = {
 			["act"] = "photo_react_startle"
 		},
 		["name"] = "Startle",
+		["length"] = 2
+	},
+	["deploy"] = {
+		["anim"] = {
+			["model"] = "models/police.mdl",
+			["type"] = "sequence",
+			["act"] = "deploy"
+		},
+		["name"] = "Deploy",
+		["length"] = 2
+	},
+	["kickdoor"] = {
+		["anim"] = {
+			["model"] = "models/police.mdl",
+			["type"] = "sequence",
+			["act"] = "kickdoorbaton"
+		},
+		["name"] = "kickdoor",
 		["length"] = 2
 	},
 	["throw"] = {
@@ -116,12 +137,7 @@ Anims.Male[ "default" ] = {
 	[ "aim" ] = {
 		[ "idle" ] = "ACT_IDLE_AIM_RIFLE_STIMULATED",
 		[ "walk" ] = "ACT_WALK_AIM_RIFLE_STIMULATED",
-		[ "run" ] = "ACT_RUN_AIM_RIFLE_STIMULATED"
-	},
-	[ "kickdoor" ] = {
-		["model"] = "models/police.mdl",
-		["type"] = "sequence",
-		["act"] = "kickdoorbaton",
+		[ "run" ] = "ACT_RUN_AIM_RIFLE_STIMULATED",
 	},
 }
 Anims.Male[ "relaxed" ] = { 
@@ -798,6 +814,7 @@ Anims.Female[ "default" ] = {
 	[ "jump" ] = "ACT_JUMP",
 	[ "land" ] = "ACT_LAND",
 	[ "fly" ] = "ACT_GLIDE",
+	[ "swim" ] = "ACT_GLIDE",
 	[ "sit" ] = "ACT_BUSY_SIT_CHAIR",
 	[ "drivejeep" ] = {
 		["model"] = "models/player/mossman.mdl",
@@ -819,14 +836,8 @@ Anims.Female[ "default" ] = {
 		["type"] = "sequence",
 		["act"] = "sit_rollercoaster"
 	},
-	[ "swim" ] = {
-		["model"] = "models/player/mossman.mdl",
-		["type"] = "sequence",
-		["act"] = "ACT_HL2MP_SWIM"
-	},
 	[ "sitentry" ] = "ACT_BUSY_SIT_CHAIR_ENTRY",
 	[ "sitexit" ] = "ACT_BUSY_SIT_CHAIR_EXIT",
-	[ "swim" ] = "ACT_GLIDE",
 	[ "sitground" ] = "ACT_BUSY_SIT_GROUND",
 	[ "sitgroundentry" ] = "ACT_BUSY_SIT_GROUND_ENTRY",
 	[ "sitgroundexit" ] = "ACT_BUSY_SIT_GROUND_EXIT",
@@ -844,11 +855,6 @@ Anims.Female[ "default" ] = {
 		[ "idle" ] = "ACT_IDLE_AIM_RIFLE_STIMULATED",
 		[ "walk" ] = "ACT_WALK_AIM_RIFLE_STIMULATED",
 		[ "run" ] = "ACT_RUN_AIM_RIFLE_STIMULATED"
-	},
-	[ "kickdoor" ] = {
-		["model"] = "models/police.mdl",
-		["type"] = "sequence",
-		["act"] = "kickdoorbaton"
 	},
 }
 Anims.Female[ "relaxed" ] = { 

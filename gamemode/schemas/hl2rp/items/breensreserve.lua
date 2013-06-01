@@ -5,7 +5,6 @@ ITEM.Model = "models/props_junk/popcan01a.mdl"
 ITEM.Purchaseable = true
 ITEM.Price = 4
 ITEM.ItemGroup = 1
-
 function ITEM:Drop(ply)
 
 end
@@ -18,7 +17,7 @@ end
 
 function ITEM:UseItem(ply)
 
-	ply:TakeItem("breensreserve")
+	ply:TakeItem("breensreserve")	
 	self:Remove()
 
 end

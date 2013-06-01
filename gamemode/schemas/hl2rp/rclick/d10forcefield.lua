@@ -1,4 +1,4 @@
-RCLICK.Name = "Disable for 10 seconds"
+RCLICK.Name = "Disable Field for 10 seconds"
 RCLICK.SubMenu = "Force Field"
 function RCLICK.Condition(target)
 	if !LocalPlayer():IsCP() then return false end

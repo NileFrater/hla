@@ -23,3 +23,5 @@ CAKE.AddDataField( 2, "gender", "Male" ) -- MAN POWER
 CAKE.AddDataField( 2, "age", 30 ) --Can't think of any puns.
 CAKE.AddDataField( 2, "gear", {} )
 CAKE.AddDataField( 2, "title2", CAKE.ConVars[ "DefaultTitle2" ] ) -- Sets a character's default extended description
+CAKE.AddDataField( 2, "banned", 1 ) --0 = Banned, 1 = Not Banned
+

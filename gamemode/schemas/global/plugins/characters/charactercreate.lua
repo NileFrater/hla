@@ -269,9 +269,20 @@ function CAKE.SelectChar( ply, uid )
 		else
 			ply:SetNWBool( "specialmodel", true ) 
 			ply:SetModel( tostring( special ) )
-		end 	
+		end
+		
+		print( char[ "banned" ] )
+		local iscb = false
+		if char[ "banned" ] == 0 then // 0 = Character Banned. You can see but can't touch :(
+		iscb = true // We need to inform next of kin
+		print( "Is Banned!" )
+		else
+		iscb = false // He's okay!
+		print( "Isn't Banned!" )
+		end
 		umsg.Start("SelectThisCharacter")
 			umsg.Long( uid )
+			umsg.Bool( iscb )
 		umsg.End()
 	end
 

@@ -27,4 +27,3 @@ function ITEM:UseItem(ply)
 	self:Remove()
 
 end
-

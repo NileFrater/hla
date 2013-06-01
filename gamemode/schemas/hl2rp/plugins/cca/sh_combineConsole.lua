@@ -9,6 +9,95 @@ surface.CreateFont( "CamLocation",
 	size		= 32,
 	weight		= 900
 })
+local function InitilizeManhackControls(parent)
+	gui.EnableScreenClicker(true)
+	RunConsoleCommand( "rp_thirdperson", "1" )
+	RunConsoleCommand("rp_manhackOpen")
+
+	local manhackPanel = vgui.Create("DPanel")
+	manhackPanel:SetSize(ScrW(), ScrH())
+	manhackPanel.Paint = function()
+		if LocalPlayer():GetViewEntity():GetClass() != "npc_manhack" or LocalPlayer():GetViewEntity():GetDTString(2) == "off" then
+			surface.SetDrawColor(0,0,0,255)
+			surface.DrawRect(0,0,manhackPanel:GetWide(),manhackPanel:GetTall())
+		end
+		surface.SetTexture(overlay)
+		surface.DrawTexturedRect(0,0,manhackPanel:GetWide(),manhackPanel:GetTall())
+	end
+
+	local label = vgui.Create("DLabel", manhackPanel)
+	label:SetPos(20,20)
+	label:SetFont("CamLocation")
+	label.Paint = function()
+		if LocalPlayer():GetViewEntity():GetClass() != "npc_manhack" then
+			label:SetText("No Viscerators Online")
+			label:SizeToContents()
+			
+		else
+			label:SetText("Viscerator Online")
+			label:SizeToContents()
+		end
+	end
+
+	local xpos = manhackPanel:GetWide() * 0.33 - 60
+	local ypos = manhackPanel:GetTall() - 30 - 10
+	local buttonWide = 100
+	local buttonTall = 30
+
+	local button = vgui.Create("DButton", manhackPanel)
+	button:SetSize(buttonWide, buttonTall)
+	button:SetText("Destroy")
+	button:SetPos(xpos, ypos)
+	button.DoClick = function() 
+		RunConsoleCommand("rp_manhackDestroy") 
+	end
+	
+	xpos = xpos + (manhackPanel:GetWide() * 0.33) *.5
+	
+	local button = vgui.Create("DButton", manhackPanel)
+	button:SetSize(buttonWide, buttonTall)
+	button:SetText("Alert!")
+	button:SetPos(xpos, ypos)
+	button.DoClick = function() 
+		RunConsoleCommand("rp_manhackAlert") 
+	end
+
+	xpos = xpos + (manhackPanel:GetWide() * 0.33) *.5
+
+	local button = vgui.Create("DButton", manhackPanel)
+	button:SetSize(buttonWide, buttonTall)
+	button:SetText("Previous Manhack")
+	button:SetPos(xpos, ypos)
+	button.DoClick = function() 
+		RunConsoleCommand("rp_manhackPrev") 
+	end
+
+	xpos = xpos + (manhackPanel:GetWide() * 0.33) *.5
+
+	local button = vgui.Create("DButton", manhackPanel)
+	button:SetSize(buttonWide, buttonTall)
+	button:SetText("Next Manhack")
+	button:SetPos(xpos, ypos)
+	button.DoClick = function() 
+		RunConsoleCommand("rp_manhackNext") 
+	end
+
+	buttonWide, buttonTall = 40, 15
+
+	local button = vgui.Create("DButton", manhackPanel)
+	button:SetSize(buttonWide, buttonTall)
+	button:SetText("Exit")
+	button:SetPos(manhackPanel:GetWide() - buttonWide - 20, buttonTall + 5)
+	button.DoClick = function() 
+		manhackPanel:Remove() 
+		gui.EnableScreenClicker(false)
+		RunConsoleCommand("rp_manhackClose") 
+	end
+	return manhack
+end
+
+--[[ End of Manhack Controls, now for some camera De Ja Vu ]]--
+
 
 local function initializeCameraControls(parent)
 	gui.EnableScreenClicker(true)
@@ -303,10 +392,12 @@ function openCombineConsole()
 		
 	local button = vgui.Create("DButton", CombineMenu)
 	button:SetSize(buttonWide, buttonTall)
-	button:SetText("Request APC Support")
+	button:SetText("Initialize Viscerator Controls")
 	button:SetPos(xpos, ypos)
 	button.DoClick = function() 
 		if baseScreenPanel.current != nil then baseScreenPanel.current:Remove() end
+		baseScreenPanel.current = InitilizeManhackControls(baseScreenPanel)
+		CombineMenu:Remove()
 	end
 
 	ypos = ypos + buttonTall + CombineMenu:GetTall() * (1/10)
@@ -396,5 +487,70 @@ else
 	local function cameraClose(ply,cmd,args)
 		ply:SetViewEntity(ply)
 	end
-	concommand.Add("rp_cameraClose", cameraClose)		
+	concommand.Add("rp_cameraClose", cameraClose)
+	
+	--[[ End of Camera Controls]]--
+
+local function manhackOpen(ply,cmd,args)
+		local manhacks = ents.FindByClass("npc_manhack")
+		if table.Count(manhacks) > 0 then
+			if ply.ccamankey == nil then
+				ply.ccamankey = 1
+			end
+			ply:SetViewEntity(manhacks[ply.ccamankey])
+		end
+	end
+	concommand.Add("rp_manhackOpen", manhackOpen)
+	
+	local function manhackAlert(ply,cmd,args)
+		local manhacks = ents.FindByClass("npc_manhack")
+		if table.Count(manhacks) > 0 then
+			if ply.ccamankey == nil then
+				ply.ccamankey = 1
+			end
+			manhacks[ply.ccamankey]:Fire("InteractivePowerDown")
+			
+		end
+	end
+	concommand.Add("rp_manhackAlert", manhackAlert)
+	
+	local function manhackDestroy(ply,cmd,args)
+		local manhacks = ents.FindByClass("npc_manhack")
+		if table.Count(manhacks) > 0 then
+			if ply.ccamankey == nil then
+				ply.ccamankey = 1
+			end
+			manhacks[ply.ccamankey]:Fire("kill")
+		end
+	end
+	concommand.Add("rp_manhackDestroy", manhackDestroy)
+	
+	local function manhackNext(ply,cmd,args)
+		local manhacks = ents.FindByClass("npc_manhack")
+		if table.Count(manhacks) > 0 then
+			ply.ccamankey = ply.ccamankey + 1
+			if ply.ccamankey > table.Count(manhacks) then
+				ply.ccamankey = 1
+			end
+			ply:SetViewEntity(manhacks[ply.ccamankey])
+		end
+	end
+	concommand.Add("rp_manhackNext", manhackNext)	
+
+	local function manhackPrev(ply,cmd,args)
+		local manhacks = ents.FindByClass("npc_manhack")
+		if table.Count(manhacks) > 0 then
+			ply.ccamankey = ply.ccamankey - 1
+			if ply.ccamankey <= 0 then
+				ply.ccamankey = table.Count(manhacks)
+			end
+			ply:SetViewEntity(manhacks[ply.ccamankey])
+		end
+	end
+	concommand.Add("rp_manhackPrev", manhackPrev)	
+
+	local function manhackClose(ply,cmd,args)
+		ply:SetViewEntity(ply)
+	end
+	concommand.Add("rp_manhackClose", manhackClose)		
 end

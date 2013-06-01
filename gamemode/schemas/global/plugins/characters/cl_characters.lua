@@ -16,7 +16,7 @@ usermessage.Hook( "ConfirmCharRemoval", function( um )
 	local namestr = um:ReadString()
 	local id = um:ReadLong()
 
-	CAKE.Query( "Are you sure you want to delete " .. namestr .. "? (Cannot be undone)", "Confirm Character Removal",
+	CAKE.Query( "Are you sure you want to delete " .. namestr .. "? (Cannot be undone!)", "Confirm Character Removal",
 		"Confirm", function()
 			LocalPlayer():ConCommand("rp_removechar " .. tostring( id ))
 			table.remove( ExistingChars, id )
@@ -57,8 +57,10 @@ end)
 
 usermessage.Hook( "SelectThisCharacter", function( data )
 	CAKE.SelectedChar = data:ReadLong( )
+	iscb = data:ReadBool( )
 	if CharacterMenu and ExistingChars[CAKE.SelectedChar] then
-		if !CharTitleLabel or !CharTitleLabel:Valid() then
+		if !(iscb) then
+			if !CharTitleLabel or !CharTitleLabel:Valid() then
 			CharTitleLabel = Label( ExistingChars[CAKE.SelectedChar]["name"] or "Loading...", CharacterMenu)
 			CharTitleLabel:SetFont( "Tiramisu24Font")
 			CharTitleLabel:SizeToContents()
@@ -70,6 +72,12 @@ usermessage.Hook( "SelectThisCharacter", function( data )
 			CharTitleLabel:SetPos( ScrW() - ScrH() / 2 - CharTitleLabel:GetWide() / 2, ScrH() - 130 )
 			CharTitleLabel.OriginalPosX, CharTitleLabel.OriginalPosY = CharTitleLabel:GetPos()
 		end
+	else
+	CAKE.SelectedChar = false
+	CAKE.Message( "This character has been permanently killed or banned and cannot be accessed!", "Error: Character Inaccessible", "OK" )
+	end
+	
+
 	end
 end)
 

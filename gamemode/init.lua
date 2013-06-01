@@ -182,6 +182,7 @@ function GM:PlayerSpawn( ply )
 	ply:SelectWeapon("hands")
 
 	ply:SetNWString( "model", CAKE.GetCharField( ply, "model" ))
+	//ply:SetNWInt( "age", CAKE.GetCharField( ply, "age" ))
 	
 	self.BaseClass:PlayerSpawn( ply )
 	GAMEMODE:SetPlayerSpeed( ply, CAKE.ConVars[ "WalkSpeed" ], CAKE.ConVars[ "RunSpeed" ] )
