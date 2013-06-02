@@ -34,6 +34,8 @@ function meta:Title()
 	return self:GetNWString( "title", "" )
 end
 
+
+
 --Calculates the position where an item should be created when dropped.
 function meta:CalcDrop( )
 
@@ -94,3 +96,47 @@ function CAKE.FindPlayer(name)
 	return false
 	
 end
+
+function CAKE.RadioEmit(ply)
+
+local radiooffsounds = {
+		"npc/metropolice/vo/off1.wav",
+		"npc/metropolice/vo/off2.wav",
+		"npc/metropolice/vo/off3.wav",
+		"npc/metropolice/vo/off4.wav"
+	};
+
+local radioonsounds = {
+		"npc/metropolice/vo/on1.wav",
+		"npc/metropolice/vo/on2.wav"
+	};
+	
+	local randomOff = radiooffsounds[ math.random(1, #radiooffsounds) ]
+	local randomOn = radioonsounds[ math.random(1, #radioonsounds) ]
+	local randomSound = CAKE.chattervoices[ math.random(1, #CAKE.chattervoices) ]
+	ply:EmitSound( randomOn, 60)
+	timer.Simple(0.5 , function() ply:EmitSound( randomSound.sound, 60) end )
+	timer.Simple(2 , function() ply:EmitSound( randomOff, 60) end )
+
+end
+
+hook.Add("Think", "Tiramisu.RadioEmitThink", function()
+
+	for k,v in pairs(player.GetAll()) do
+		if v:IsCP() then
+		local curTime = CurTime()
+		
+			if (!v.nextChatterEmit) then
+			local durr = curTime + math.random(30, 50)
+				v.nextChatterEmit = durr
+			end
+			
+			if ( (curTime >= v.nextChatterEmit) ) then
+				v.nextChatterEmit = nil
+				
+				CAKE.RadioEmit(v)
+			end
+		end
+	end
+
+end)

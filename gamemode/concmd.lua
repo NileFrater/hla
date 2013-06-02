@@ -15,6 +15,12 @@ concommand.Add( "rp_title", function( ply, cmd, args )
 	ply:SetNWString("title", title)
 
 end)
+-- View/Edit Personal Notes
+concommand.Add( "rp_viewpnotes", function( ply, cmd, args )
+
+	CAKE.SendCurrentNotes( ply )
+
+end)
 
 --Set Name
 concommand.Add( "rp_changename", function( ply, cmd, args )

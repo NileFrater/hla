@@ -1,4 +1,3 @@
-
 if CLIENT then
 
 local overlay = surface.GetTextureID("effects/combine_binocoverlay")

@@ -18,10 +18,10 @@ CAKE.AddDataField( 2, "model", "models/humans/group01/male_07.mdl" ) -- Your bas
 CAKE.AddDataField( 2, "personality", "default" ) --Don't be making a cult over it.
 CAKE.AddDataField( 2, "title", CAKE.ConVars[ "DefaultTitle" ] ) -- What is their default title.
 CAKE.AddDataField( 2, "money", CAKE.ConVars[ "DefaultMoney" ] ) -- How much money do players start out with.
-CAKE.AddDataField( 2, "flags", CAKE.ConVars[ "DefaultFlags" ] ) -- What flags do they start with.
 CAKE.AddDataField( 2, "gender", "Male" ) -- MAN POWER
 CAKE.AddDataField( 2, "age", 30 ) --Can't think of any puns.
 CAKE.AddDataField( 2, "gear", {} )
 CAKE.AddDataField( 2, "title2", CAKE.ConVars[ "DefaultTitle2" ] ) -- Sets a character's default extended description
 CAKE.AddDataField( 2, "banned", 1 ) --0 = Banned, 1 = Not Banned
+CAKE.AddDataField( 2, "notes", "You can edit these notes as you see fit" ) 
 

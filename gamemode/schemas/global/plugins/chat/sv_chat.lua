@@ -157,7 +157,22 @@ function CAKE.ICAdd( ply, text, range, font, channel )
 
 	if ply:Alive() then
 		range = range or CAKE.ConVars[ "TalkRange" ]
-
+		
+			--[[ Begin Fucking ]]--
+			pn = ply:Nick() // Since we take the phrase from the sh_voice tables, we have to rip the text variable apart then reconstruct it with the returned information.
+			vcttext = string.gsub(text, pn.. ": ", "")
+			CAKE.VoiceCheck( ply, vcttext )
+		
+			if VoiceDone == false then
+				VoiceDone = true
+				vpttext = voice.phrase
+				constructedname = ply:Nick() .. ": " .. vpttext
+				print ( constructedname )
+				vpttext = nil
+				text = constructedname
+			else	
+			end
+			--[[ End Fucking ]]--
 		for _, pl in pairs( ents.FindInSphere( ply:GetPos(), range * 2 ) ) do
 			local tracedata = {}
 			tracedata.start = pl:EyePos()
@@ -335,6 +350,31 @@ local function PersonalMessage( ply, text )
 	
 end
 
+-- Sends an In-Character Private Message (page) to any online Civil Protection units. Opens up in a separate channel.
+local function PageMessage( ply, text )
+
+	if ply:IsCP() then
+		-- Check to see if the player's team allows broadcasting
+		local exp = string.Explode( " ", text )
+		local target = CAKE.FindPlayer( exp[1] )
+		table.remove( exp, 1)
+		if target then
+			if target:IsCP() then // This might work but its sort of difficult to test in single player :(
+				CAKE.SendChat( target, "[INCOMING PAGE:" .. ply:Nick() .. "]" .. table.concat( exp, " " ), false, ply:Name(), "/page " .. CAKE.FormatText(ply:SteamID()) .. " " )
+				CAKE.SendChat( ply, "[OUTGOING PAGE:" .. target:Nick() .. "]" .. table.concat( exp, " " ), false, target:Name(),"/page " .. CAKE.FormatText(target:SteamID()) .. " " )
+			else
+				AKE.SendChat( ply, "Target is not a Civil Protection unit!" )
+			end
+		else
+			CAKE.SendChat( ply, "Target not found!" )
+		end
+	else
+		CAKE.SendChat( ply, "You do not have access to this command!" )
+	end
+	
+	return ""
+	
+end
 --Removes your currently wore helmet.
 local function RemoveHelmet( ply, text )
 	
@@ -449,6 +489,7 @@ function PLUGIN.Init( ) -- We run this in init, because this is called after the
 	CAKE.ChatCommand( "/event", Event )	-- Advertisements
 	CAKE.ChatCommand( "/removehelmet", RemoveHelmet )
 	CAKE.ChatCommand( "/pm", PersonalMessage )
+	CAKE.ChatCommand( "/page", PageMessage )
 	CAKE.ChatCommand( "/title", Title )
 	CAKE.ChatCommand( "/report", Report )
 	

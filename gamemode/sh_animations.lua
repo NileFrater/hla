@@ -73,6 +73,11 @@ function meta:SetGesture( gesture, weight )
 
 end
 
+function meta:SetupRadioChatter()
+
+	ply.nextChatterEmit = 1
+end
+
 function meta:StopGesture()
 
 	self.DoGesture = false

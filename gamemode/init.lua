@@ -77,6 +77,8 @@ util.AddNetworkString( "Tiramisu.GetSearchResults" )
 util.AddNetworkString( "Tiramisu.SendInventory" )
 util.AddNetworkString( "Tiramisu.GetEditGear" ) 
 util.AddNetworkString( "Tiramisu.WriteNote" )
+util.AddNetworkString( "Tiramisu.WritePersonalNote" )
+util.AddNetworkString( "Tiramisu.SendPersonalNotes" )
 
 GM.Name = "Tiramisu " .. CAKE.ConVars[ "Tiramisu" ]
 CAKE.LoadSchema( CAKE.ConVars[ "Schema" ] ) -- Load the schema and plugins, this is NOT initializing.
@@ -122,6 +124,7 @@ function GM:PlayerInitialSpawn( ply )
 
 	-- Set some default variables
 	ply.Ready = false
+	ply.nextChatterEmit = nil
 	ply:SetNWBool( "chatopen", false )
 	ply:SetNWBool( "specialmodel", true ) 
 	ply:SetModel( "models/kleiner.mdl" )
