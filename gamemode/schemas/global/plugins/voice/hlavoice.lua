@@ -51,12 +51,12 @@ function CAKE.VoiceCheck( ply, text )
  
 	local vcmtext = text
 	-- Lets first make sure the player is a CP
+	local IsACombine = false
 	if ply:IsCP() then
 		IsACombine = true
-	else
-		IsACombine = false
 	end
 		-- And whether or not they are, we're about to check the huge voice tables from sh_voice
+		local VoiceDone = false		
 		for k, v in pairs(CAKE.voices) do
 			if ( (v.faction == "Combine" and IsACombine == true ) or ( v.faction == "Human" and IsACombine == false) ) then
 				print( text )
@@ -76,14 +76,13 @@ function CAKE.VoiceCheck( ply, text )
 			
 			if voice then
 				if VoiceDone == true then
-				print( "Jobby?")
-				return false
-			else
-				print ( "about to emit" )
-				ply:EmitSound(voice.sound, voice.volume)
-				return voice.phrase	
-			end	
+					print( "Jobby?")
+					return false
+				else
+					print ( "about to emit" )
+					ply:EmitSound(voice.sound, voice.volume)
+					return voice.phrase	
+				end	
 			end
-	
-		end 
-	end
+		end
+end
