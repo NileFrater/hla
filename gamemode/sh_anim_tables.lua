@@ -1,5 +1,9 @@
 Anims.Male = {}
 
+if CLIENT then
+  util.PrecacheModel("models/breen.mdl")
+end
+
 if CAKE.ConVars[ "UseEnhancedCitizens" ] then
 	Anims.Male[ "models" ] = {
 		"models/bloo_ltcom/citizens/male_01.mdl",
