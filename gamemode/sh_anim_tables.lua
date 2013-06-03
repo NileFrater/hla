@@ -96,7 +96,7 @@ Anims.Male[ "default" ] = {
 	[ "sitexit" ] = "ACT_BUSY_SIT_CHAIR_EXIT",
 	[ "drivejeep" ] = {
 		["model"] = "models/player/breen.mdl",
-		["type"] = "sequence",
+		["type"] = "switch",
 		["act"] = "drive_jeep"
 	},
 	[ "driveairboat" ] = {
