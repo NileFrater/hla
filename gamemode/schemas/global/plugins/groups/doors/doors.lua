@@ -5,10 +5,19 @@ end)
 CAKE.Doors = {}
 
 
-function flyOpen(door)
+function flyOpen(door, dmginfo)
 	local oldspeed = door:GetKeyValues()["speed"]
 	door:SetKeyValue("speed","500")
-	door:Fire("Open",0)
+	if dmginfo != nil && dmginfo:GetAttacker():IsPlayer() then
+	    local point = ents.Create("info_target")
+	    point:SetKeyValue("targetname", "shooter")
+	    point:Spawn()
+	    point:SetPos(dmginfo:GetAttacker():GetPos())
+	    door:Fire("OpenAwayFrom",'shooter', 0)
+	    point:Remove()
+	  else
+	    door:Fire("Open",0)  
+	  end  
 	timer.Simple(.5,function() door:SetKeyValue("speed", oldspeed) end)
 end
 
